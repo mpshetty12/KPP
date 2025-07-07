@@ -68,30 +68,6 @@ const App = () => {
   };
 
 
-// import React, { useState } from 'react';
-// import './App.css';
-
-// const App = () => {
-//   const [currentView, setCurrentView] = useState('home');
-//   const [registrations, setRegistrations] = useState([]);
-//   const [adminPassword, setAdminPassword] = useState('');
-//   const [isAdminAuthenticated, setIsAdminAuthenticated] = useState(false);
-
-//   const handleAdminLogin = () => {
-//     if (adminPassword === '1234') {
-//       setIsAdminAuthenticated(true);
-//       setCurrentView('admin');
-//     } else {
-//       alert('ಅಮಾನ್ಯ ಪಾಸ್‌ವರ್ಡ್! (Invalid Password!)');
-//     }
-//   };
-
-//   const handleRegistration = (formData) => {
-//     setRegistrations([...registrations, { ...formData, id: Date.now() }]);
-//     alert('ನೋಂದಣಿ ಯಶಸ್ವಿಯಾಗಿದೆ! (Registration Successful!)');
-//     setCurrentView('home');
-//   };
-
   const HomePage = () => (
     <div className="home-page">
       <div className="header">
@@ -108,17 +84,18 @@ const App = () => {
       
       <div className="menu-container">
         <div className="menu-grid">
-          <div className="menu-card" onClick={() => setCurrentView('menu')}>
-            <h3>ಮುಖ್ಯ ಮೆನು</h3>
-            <p>Main Menu</p>
-          </div>
-          <div className="menu-card" onClick={() => setCurrentView('registration')}>
-            <h3>ಆಟದ ನೋಂದಣಿ</h3>
-            <p>Game Registration</p>
+         <div className="menu-card" onClick={() => setCurrentView('registration')}>
+            <h3>ಸಾಂಸ್ಕ್ರತಿಕ & ಆಟೋಟ ಸ್ಫರ್ಧೆಗಳಿಗೆ ನೋಂದಣಿ</h3>
+            <p>Registration for events</p>
           </div>
           <div className="menu-card" onClick={() => setCurrentView('kambala')}>
             <h3>ಕಂಬಳಕ್ಕೆ ನೋಂದಣಿ</h3>
             <p>Kmabala Registration</p>
+          </div>
+          
+          <div className="menu-card" onClick={() => setCurrentView('menu')}>
+            <h3>ಮುಖ್ಯ ಮೆನು</h3>
+            <p>Main Menu</p>
           </div>
           <div className="menu-card" onClick={() => setCurrentView('admin-login')}>
             <h3>ಅಡ್ಮಿನ್ ವ್ಯೂ</h3>
@@ -145,7 +122,7 @@ const App = () => {
         <h2>ಮುಖ್ಯ ಮೆನು</h2>
       </div>
       <div className="menu-list">
-      <div className="menu-item">
+        <div className="menu-item">
           <h3>ಕಂಬಳ</h3>
         </div>
         <div className="menu-item">
@@ -163,6 +140,15 @@ const App = () => {
           </ul>
         </div>
         <div className="menu-item">
+          <h3>ಸಾಂಸ್ಕ್ರತಿಕ ಸ್ಫರ್ಧೆಗಳು (Cultural events)</h3>
+          <ul>
+            <li>ಭಾಷಣ (Speech)</li>
+            <li>ಪ್ರಬಂಧ (Essay)</li>
+            <li>ಚಿತ್ರಕಲೆ (Drawing)</li>
+            <li>ಸಂಗೀತ </li>
+          </ul>
+        </div>
+        <div className="menu-item">
           <h3>Games Rules</h3>
           <p>waiting for update</p>
         </div>
@@ -173,6 +159,11 @@ const App = () => {
   const GameRegistration = () => {
     const [gameType, setGameType] = useState('');
     const [specificGame, setSpecificGame] = useState('');
+    useEffect(() => {
+      if (gameType === 'kambala') {
+        setSpecificGame('kambala'); // default for kambala
+      }
+    }, [gameType]);
     const [formData, setFormData] = useState({
       name: '',
       phone: '',
@@ -185,6 +176,10 @@ const App = () => {
     };
 
     const handleSubmit = () => {
+      if (!formData.name || !formData.phone || !formData.place) {
+        alert('ದಯವಿಟ್ಟು ಎಲ್ಲ ಫೀಲ್ಡ್‌ಗಳನ್ನು ಭರ್ತಿ ಮಾಡಿ');
+        return;
+      }
       const registrationData = {
         ...formData,
         gameType,
@@ -203,17 +198,19 @@ const App = () => {
         
         <div className="registration-form">
           <div className="game-type-selector">
-            <label>ಆಟದ ಪ್ರಕಾರ ಆಯ್ಕೆ ಮಾಡಿ:</label>
-            <select value={gameType} onChange={(e) => setGameType(e.target.value)}>
+            <label>ಸ್ಫರ್ಧೆಗಳಿಗೆ ಆಯ್ಕೆ ಮಾಡಿ:</label>
+            <select value={gameType} onChange={(e) => setGameType(e.target.value)} disabled={!!specificGame}>
               <option value="">ಆಯ್ಕೆ ಮಾಡಿ</option>
               <option value="indoor">ಒಳಗಿನ ಆಟಗಳು</option>
               <option value="outdoor">ಹೊರಗಿನ ಆಟಗಳು</option>
+              <option value="cultural">ಸಾಂಸ್ಕ್ರತಿಕ ಸ್ಫರ್ಧೆಗಳು</option>
+              <option value="kambala">ಕಂಬಳ</option>
             </select>
           </div>
 
           {gameType === 'indoor' && (
             <div className="specific-game-selector">
-              <label>ಆಟ ಆಯ್ಕೆ ಮಾಡಿ:</label>
+              <label>ಸ್ಫರ್ಧೆ ಆಯ್ಕೆ ಮಾಡಿ:</label>
               <select value={specificGame} onChange={(e) => setSpecificGame(e.target.value)}>
                 <option value="">ಆಯ್ಕೆ ಮಾಡಿ</option>
                 <option value="gudna">ಗುಡ್ನ</option>
@@ -224,7 +221,7 @@ const App = () => {
 
           {gameType === 'outdoor' && (
             <div className="specific-game-selector">
-              <label>ಆಟ ಆಯ್ಕೆ ಮಾಡಿ:</label>
+              <label>ಸ್ಫರ್ಧೆ ಆಯ್ಕೆ ಮಾಡಿ:</label>
               <select value={specificGame} onChange={(e) => setSpecificGame(e.target.value)}>
                 <option value="">ಆಯ್ಕೆ ಮಾಡಿ</option>
                 <option value="volleyball">ವಾಲಿಬಾಲ್ (ತಂಡ)</option>
@@ -233,8 +230,30 @@ const App = () => {
               </select>
             </div>
           )}
+        
+          {gameType === 'cultural' && (
+            <div className="specific-game-selector">
+              <label>ಸ್ಫರ್ಧೆ ಆಯ್ಕೆ ಮಾಡಿ:</label>
+              <select value={specificGame} onChange={(e) => setSpecificGame(e.target.value)}>
+                <option value="">ಆಯ್ಕೆ ಮಾಡಿ</option>
+                <option value="speech">ಭಾಷಣ</option>
+                <option value="essay">ಪ್ರಬಂಧ</option>
+                <option value="drawing">ಚಿತ್ರಕಲೆ</option>
+                <option value="music">ಸಂಗೀತ</option>
+              </select>
+            </div>
+          )}
+          {gameType === 'kambala' && (
+            <div>
+              {/* You can show something else here if needed */}
+              <p>ಕಂಬಳ ಸ್ಪರ್ಧೆ ಆಯ್ಕೆಮಾಡಲಾಗಿದೆ</p>
+            </div>
+          )}
+          
+          
 
           {specificGame && (
+            
             <div className="registration-details">
               <div className="form-group">
                 <label>ಹೆಸರು (Name):</label>
@@ -276,6 +295,7 @@ const App = () => {
                   name="place"
                   value={formData.place}
                   onChange={handleInputChange}
+                  required
                 />
               </div>
 
@@ -301,6 +321,14 @@ const App = () => {
                       required
                     />
                   </div> */}
+                </>
+              )}
+
+              {(specificGame === 'speech' || specificGame === 'essay' || specificGame === 'drawing' || specificGame === 'music') && (
+                <>
+                  <div className="form-group">
+                    <label>ವಿಷಯ : ಕುಂದಾಪ್ರ ಪರಿಸರ</label>
+                  </div>
                 </>
               )}
 
@@ -332,68 +360,7 @@ const App = () => {
       </div>
     </div>
   );
-  const Kambala = () => (
-    <div className="page">
-      <div className="page-header">
-        <button className="back-btn" onClick={() => setCurrentView('home')}>← ಹಿಂದೆ</button>
-        <h2>KAMBALA</h2>
-      </div>
-      <div className="admin-login">
-        <div className="form-group">
-          <label>Will update soon</label>
-          
-        </div>
-        
-      </div>
-    </div>
-  );
-
-  // const AdminView = () => {
-  //   const groupedRegistrations = registrations.reduce((acc, reg) => {
-  //     const key = `${reg.gameType}-${reg.specificGame}`;
-  //     if (!acc[key]) acc[key] = [];
-  //     acc[key].push(reg);
-  //     return acc;
-  //   }, {});
-
-  //   return (
-  //     <div className="page">
-  //       <div className="page-header">
-  //         <button className="back-btn" onClick={() => {
-  //           setCurrentView('home');
-  //           setIsAdminAuthenticated(false);
-  //           setAdminPassword('');
-  //         }}>← ಹಿಂದೆ</button>
-  //         <h2>ಅಡ್ಮಿನ್ ವ್ಯೂ - ನೋಂದಣಿಗಳು</h2>
-  //       </div>
-        
-  //       <div className="admin-content">
-  //         {Object.keys(groupedRegistrations).length === 0 ? (
-  //           <p>ಇನ್ನೂ ಯಾವುದೇ ನೋಂದಣಿಗಳಿಲ್ಲ</p>
-  //         ) : (
-  //           Object.entries(groupedRegistrations).map(([gameKey, regs]) => (
-  //             <div key={gameKey} className="game-section">
-  //               <h3>{regs[0].specificGame} - {regs[0].gameType}</h3>
-  //               <div className="registrations-list">
-  //                 {regs.map((reg) => (
-  //                   <div key={reg.id} className="registration-card">
-  //                     <h4>{reg.name}</h4>
-  //                     <p>ವಯಸ್ಸು: {reg.age}</p>
-  //                     <p>ಫೋನ್: {reg.phone}</p>
-  //                     {reg.place && <p>ಸ್ಥಳ: {reg.place}</p>}
-  //                     {reg.teamName && <p>ತಂಡ: {reg.teamName}</p>}
-  //                     {/* {reg.teamMembers && <p>ಸದಸ್ಯರು: {reg.teamMembers}</p>} */}
-  //                     <p>ನೋಂದಣಿ ದಿನಾಂಕ: {reg.registrationDate}</p>
-  //                   </div>
-  //                 ))}
-  //               </div>
-  //             </div>
-  //           ))
-  //         )}
-  //       </div>
-  //     </div>
-  //   );
-  // };
+  
   const AdminView = () => {
     const [selectedGame, setSelectedGame] = useState('');
   
@@ -462,7 +429,7 @@ const App = () => {
       {currentView === 'menu' && <MainMenu />}
       {currentView === 'registration' && <GameRegistration />}
       {currentView === 'admin-login' && <AdminLogin />}
-      {currentView === 'kambala' && <Kambala />}
+      {currentView === 'kambala' && <GameRegistration />}
       {currentView === 'admin' && isAdminAuthenticated && <AdminView />}
     </div>
   );
