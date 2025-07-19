@@ -5,7 +5,7 @@ import {
   getFirestore,
   collection,
   addDoc,
-  getDocs
+  getDocs,
 } from 'firebase/firestore';
 
 // Firebase config (replace with your own)
@@ -19,15 +19,17 @@ const firebaseConfig = {
   // measurementId: "G-EMJQYXKXTB"
 };
 
+
 // Init Firebase
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
+
 
 const App = () => {
   const [currentView, setCurrentView] = useState('home');
   const [registrations, setRegistrations] = useState([]);
   const [adminPassword, setAdminPassword] = useState('');
-  const [isAdminAuthenticated, setIsAdminAuthenticated] = useState(false);
+  const [isAdminAuthenticated, setIsAdminAuthenticated] = useState(false);  
 
   // Fetch data when admin logs in
   useEffect(() => {
@@ -35,6 +37,22 @@ const App = () => {
       fetchRegistrations();
     }
   }, [isAdminAuthenticated]);
+
+  const [gameTypes, setGameTypes] = useState([]);
+
+  useEffect(() => {
+    const fetchGameTypes = async () => {
+      try {
+        const snapshot = await getDocs(collection(db, "gameTypes"));
+        const data = snapshot.docs.map(doc => doc.data());
+        setGameTypes(data);
+      } catch (error) {
+        console.error("Error fetching game types:", error);
+      }
+    };
+
+    fetchGameTypes();
+  }, []);
 
   const fetchRegistrations = async () => {
     try {
@@ -47,7 +65,7 @@ const App = () => {
   };
 
   const handleAdminLogin = () => {
-    if (adminPassword === '1234') {
+    if (adminPassword === '9080') {
       setIsAdminAuthenticated(true);
       setCurrentView('admin');
     } else {
@@ -73,12 +91,19 @@ const App = () => {
       <div className="header">
         <div className="logo-section">
           <h1 className="main-title">ಗಮ್ಮತ್ತ್</h1>
+          {/* <button onClick={() => createGentsGamesDocument()}>Create Ladies Games</button> */}
           <p className="subtitle">ಕುಂದಾಪ್ರ ಕನ್ನಡ ಸಂಸ್ಕ್ರತಿ ಪ್ರತಿಷ್ಠಾನ ಬೈಂದೂರು
           ಪ್ರಸ್ತುತಿ</p>
+          <br/>
+          
         </div>
         <div className="date-info">
           <span className="date">3 ಆಗಸ್ಟ್ 2025  ಭಾನುವಾರ</span>
           <span className="day">ನೆಲ್ಯಾಡಿ ಬೈಲ್ ಹಾಗೂ ಜೆ ಎನ್ ಆರ್ ಸಭಾಂಗಣ NH 66 ಯಡ್ತರೆ ಬೈಂದೂರು</span>
+          <br/>
+          <br/>
+          <p>ಮಾಹಿತಿಗಾಗಿ:
+          9986099687 9481518382 9900351095 </p>
         </div>
       </div>
       
@@ -94,8 +119,8 @@ const App = () => {
           </div>
           
           <div className="menu-card" onClick={() => setCurrentView('menu')}>
-            <h3>ಮುಖ್ಯ ಮೆನು</h3>
-            <p>Main Menu</p>
+            <h3>ಆಟದ ಬಗ್ಗೆ ಮಾಹಿತಿ</h3>
+            <p>Games Information</p>
           </div>
           <div className="menu-card" onClick={() => setCurrentView('admin-login')}>
             <h3>ಅಡ್ಮಿನ್ ವ್ಯೂ</h3>
@@ -119,46 +144,96 @@ const App = () => {
     <div className="page">
       <div className="page-header">
         <button className="back-btn" onClick={() => setCurrentView('home')}>← ಹಿಂದೆ</button>
-        <h2>ಮುಖ್ಯ ಮೆನು</h2>
+        <h2>ಆಟದ ಬಗ್ಗೆ ಮಾಹಿತಿ</h2>
       </div>
+  
       <div className="menu-list">
         <div className="menu-item">
-          <h3>ಕಂಬಳ</h3>
-        </div>
-        <div className="menu-item">
-          <h3>ಒಳಗಿನ ಆಟಗಳು (Indoor Games)</h3>
+          <h3>ನಿಮ್ಗಾಯ್ ನಮ್ ನಮ್ನಿ ಸ್ಪರ್ಧೆಗಳು:</h3>
+  
+          <h4>ಮಹಿಳೆಯರಿಗೆ:</h4>
           <ul>
-            <li>ಗುಡ್ನ (Gudna)</li>
-            <li>ಚೆನ್ನಿಮಣಿ (Channemani)</li>
+            <li>ಹಗ್ಗಜಗ್ಗಾಟ</li>
+            <li>ಥ್ರೋ ಬಾಲ್</li>
+            <li>ಕೆಸರ್ ಗ್ಯದ್ದಿ ಓಟ</li>
+            <li>ಮಡ್ಲ್ ನೇಯುದ್</li>
+            <li>ಅಡಿಕೆ ಹಾಳ್ಯಂಗ್ ಎಳುದ್</li>
+            <li>ತೆಂಗಿನ ಚ್ವಾಂಗಿ ಮಾದರಿ ತಯಾರ್ಸುದ್</li>
+            <li>ಕೊಟ್ಟಿ ಸೆಡುದ್</li>
+            <li>ಹೂಮಾಲಿ ಕಟ್ಟುದ್</li>
+            <li>ಗುಡ್ನ ಆಟ</li>
+            <li>ಚನ್ನೆಮಣಿ ಆಟ</li>
+            <li>ಸಾಂಪ್ರದಾಯಿಕ ಗೀತೆ ಗಾಯನ</li>
+            <li>ರಸಪ್ರಶ್ನೆ</li>
+          </ul>
+  
+          <h4>ಪುರುಷರಿಗೆ:</h4>
+          <ul>
+            <li>ಹಗ್ಗಜಗ್ಗಾಟ</li>
+            <li>ವಾಲಿಬಾಲ್</li>
+            <li>ಕಬಡ್ಡಿ</li>
+            <li>ಕೆಸರ್ ಗ್ಯದ್ದಿ ಓಟ</li>
+            <li>ಅಡಿಕೆ ಹಾಳ್ಯಂಗ್ ಎಳುದ್</li>
+            <li>ತೆಂಗಿನ ಚ್ವಾಂಗಿ ಮಾದರಿ ತಯಾರ್ಸುದ್</li>
+            <li>ಬೀಸ್ ಬಲಿ - ರೌಂಡ್ ಬುಸುದ್</li>
+            <li>ಚಿಟ್ ಬಿಲ್ ಶೂಟಿಂಗ್</li>
+            <li>ಚನ್ನೆಮಣಿ ಆಟ</li>
+            <li>ಸಾಂಪ್ರದಾಯಿಕ ಗೀತೆ ಗಾಯನ</li>
+            <li>ರಸಪ್ರಶ್ನೆ</li>
+          </ul>
+  
+          <h4>ಮಕ್ಕಳಿಗೆ:</h4>
+          <ul>
+            <li>ಕೆಸರ್ ಗ್ಯದ್ದಿ ಓಟ</li>
+            <li>ಬೆನ್ ಚೆಂಡ್ ಆಟ</li>
+            <li>ಲಿಂಬು ಚಮಚ ಓಟ</li>
+            <li>ಗೂಟಕ್ಕೆ ಸುತ್ತಿ ಓಡುದ್</li>
+            <li>ಅಡಿಕೆ ಹಾಳ್ಯಂಗ್ ಎಳುದ್</li>
+            <li>ತೆಂಗಿನ ಚ್ವಾಂಗಿ ಮಾದರಿ ತಯಾರ್ಸುದ್</li>
+            <li>ಭಾಷಣ — ವಿಷಯ: ಕುಂದಾಪ್ರ ಕನ್ನಡ ಗಾದೆ ವಿಸ್ತರಣೆ</li>
+            <li>ಚಿತ್ರಕಲೆ</li>
+            <li>ಛದ್ಮವೇಷ</li>
+            <li>ರಸಪ್ರಶ್ನೆ</li>
           </ul>
         </div>
+  
         <div className="menu-item">
-          <h3>ಹೊರಗಿನ ಆಟಗಳು (Outdoor Games)</h3>
+          <h3>ನಿಯಮಗಳು:</h3>
           <ul>
-            <li><strong>ತಂಡ:</strong> ವಾಲಿಬಾಲ್, ಕಬಡ್ಡಿ</li>
-            <li><strong>ವೈಯಕ್ತಿಕ:</strong> ಗುಂಡೆಸೆತ</li>
+            <li>ಎಲ್ಲಾ ವಿಜೇತರಿಗೂ ಆಕರ್ಷಕ ಬಹುಮಾನ & ಪ್ರಮಾಣಪತ್ರ ನೀಡಿ ಗೌರವಿಸಲಾಗುವುದು</li>
+            <li>ಬೈಂದೂರು ವಿಧಾನಸಭಾ ಕ್ಷೇತ್ರ ವ್ಯಾಪ್ತಿಯ ನಾಗರಿಕರಿಗೆ ಭಾಗವಹಿಸಲು  ಅವಕಾಶ</li>
+            <li>ಆಧಾರ್ ಕಾರ್ಡ್ ಕಡ್ಡಾಯ</li>
+            <li>ಮಕ್ಕಳ ಕ್ರೀಡೆ ಹಾಗೂ ಸ್ಪರ್ಧೆಗಳಿಗೆ ಬೆಳಿಗ್ಗೆ ಗಂಟೆ 9ರ ತನಕ ನೊಂದಣಿಗೆ ಅವಕಾಶ</li>
+            <li>ಸ್ಪರ್ಧೆಗಳನ್ನು ಬೇಗನೆ ಪ್ರಾರಂಭಿಸುವುದರಿಂದ ಎಲ್ಲಾ ಸ್ಪರ್ಧಾಳುಗಳು ಬೆಳಿಗ್ಗೆಯೇ ಉಪಸ್ಥಿತರಿರುವುದು</li>
+            <li>ವಿದ್ಯಾರ್ಥಿಗಳು ಪೋಷಕರೊಂದಿಗೆ ಹಾಜರಾಗುವುದು ಹಾಗೂ ಸುರಕ್ಷಿತ ಸ್ಥಳದಲ್ಲಿ ನಿಂತು ಕಾರ್ಯಕ್ರಮ ವೀಕ್ಷಿಸುವುದು ಮತ್ತು ಭಾಗವಹಿಸುವುದು</li>
+            <li>ಸ್ಪರ್ಧೆಗಳನ್ನು ಕೆಸರುಗದ್ದೆ ಹಾಗೂ ಹಾಲ್‌ನ ಹೊರಾಂಗಣ ಹಾಗೂ ಒಳಾಂಗಣದಲ್ಲಿ ನಡೆಸಲಾಗುತ್ತದೆ</li>
+            <li>ನಿರ್ಣಾಯಕರ ತೀರ್ಮಾನವೇ ಅಂತಿಮ</li>
+            <li>ಉಚಿತ ಪ್ರವೇಶ</li>
           </ul>
+          <p>ಹ್ವಾಯ್, ನೀವ್ ತಪ್ದೇ ಬರ್ಕ್ — ಗಡ್ಜ್ ಗಮ್ಮತ್ ಮಾಡ್ವ!</p>
         </div>
+  
         <div className="menu-item">
-          <h3>ಸಾಂಸ್ಕ್ರತಿಕ ಸ್ಫರ್ಧೆಗಳು (Cultural events)</h3>
-          <ul>
-            <li>ಭಾಷಣ (Speech)</li>
-            <li>ಪ್ರಬಂಧ (Essay)</li>
-            <li>ಚಿತ್ರಕಲೆ (Drawing)</li>
-            <li>ಸಂಗೀತ </li>
-          </ul>
-        </div>
-        <div className="menu-item">
-          <h3>Games Rules</h3>
-          <p>waiting for update</p>
+          <h3>ಮಾಹಿತಿಗಾಗಿ:</h3>
+          <p>9986099687 | 9481518382 | 9900351095</p>
         </div>
       </div>
     </div>
   );
+  
 
-  const GameRegistration = () => {
+  const GameRegistration = (props) => {
     const [gameType, setGameType] = useState('');
+    useEffect(() => {
+      if (props.yy === 'kambala') {
+        setGameType('kambala');
+        setSpecificGame('kambala');
+      }
+    }, [props.yy]);
+    
     const [specificGame, setSpecificGame] = useState('');
+    const currentGameType = gameTypes.find(g => g.type === gameType);
+    const currentGame = currentGameType?.games.find(g => g.id === specificGame);
     useEffect(() => {
       if (gameType === 'kambala') {
         setSpecificGame('kambala'); // default for kambala
@@ -180,6 +255,10 @@ const App = () => {
         alert('ದಯವಿಟ್ಟು ಎಲ್ಲ ಫೀಲ್ಡ್‌ಗಳನ್ನು ಭರ್ತಿ ಮಾಡಿ');
         return;
       }
+      if ((specificGame === 'volleyball' || specificGame === 'kabaddi' || specificGame === "hagga-jaggata" || specificGame === "throwball" || specificGame === "haggu") && !formData.teamName) {
+        alert('ತಂಡದ ಹೆಸರು ಅಗತ್ಯವಿದೆ');
+        return;
+      }
       const registrationData = {
         ...formData,
         gameType,
@@ -197,52 +276,43 @@ const App = () => {
         </div>
         
         <div className="registration-form">
+
           <div className="game-type-selector">
             <label>ಸ್ಫರ್ಧೆಗಳಿಗೆ ಆಯ್ಕೆ ಮಾಡಿ:</label>
-            <select value={gameType} onChange={(e) => setGameType(e.target.value)} disabled={!!specificGame}>
-              <option value="">ಆಯ್ಕೆ ಮಾಡಿ</option>
-              <option value="indoor">ಒಳಗಿನ ಆಟಗಳು</option>
-              <option value="outdoor">ಹೊರಗಿನ ಆಟಗಳು</option>
-              <option value="cultural">ಸಾಂಸ್ಕ್ರತಿಕ ಸ್ಫರ್ಧೆಗಳು</option>
-              <option value="kambala">ಕಂಬಳ</option>
+            <select value={gameType} onChange={(e) => {
+              setGameType(e.target.value);
+              setSpecificGame('');
+            }}
+            disabled={!!specificGame}>
+            <option value="" disabled>ಆಯ್ಕೆ ಮಾಡಿ</option>
+            {gameTypes
+              .filter(g => {
+                if (!props.yy) {
+                  return g.type !== 'kambala'; // hide kambala only when yy is empty
+                }
+              return true; // include all types otherwise
+              })
+              .map(g => (
+                <option key={g.type} value={g.type}>
+                    {g.label}
+                </option>
+            ))}
+
             </select>
           </div>
 
-          {gameType === 'indoor' && (
-            <div className="specific-game-selector">
-              <label>ಸ್ಫರ್ಧೆ ಆಯ್ಕೆ ಮಾಡಿ:</label>
-              <select value={specificGame} onChange={(e) => setSpecificGame(e.target.value)}>
-                <option value="">ಆಯ್ಕೆ ಮಾಡಿ</option>
-                <option value="gudna">ಗುಡ್ನ</option>
-                <option value="channemani">ಚೆನ್ನಿಮಣಿ</option>
-              </select>
-            </div>
-          )}
 
-          {gameType === 'outdoor' && (
-            <div className="specific-game-selector">
-              <label>ಸ್ಫರ್ಧೆ ಆಯ್ಕೆ ಮಾಡಿ:</label>
-              <select value={specificGame} onChange={(e) => setSpecificGame(e.target.value)}>
-                <option value="">ಆಯ್ಕೆ ಮಾಡಿ</option>
-                <option value="volleyball">ವಾಲಿಬಾಲ್ (ತಂಡ)</option>
-                <option value="kabaddi">ಕಬಡ್ಡಿ (ತಂಡ)</option>
-                <option value="shorts">ಗುಂಡೆಸೆತ (ವೈಯಕ್ತಿಕ)</option>
-              </select>
-            </div>
-          )}
-        
-          {gameType === 'cultural' && (
-            <div className="specific-game-selector">
-              <label>ಸ್ಫರ್ಧೆ ಆಯ್ಕೆ ಮಾಡಿ:</label>
-              <select value={specificGame} onChange={(e) => setSpecificGame(e.target.value)}>
-                <option value="">ಆಯ್ಕೆ ಮಾಡಿ</option>
-                <option value="speech">ಭಾಷಣ</option>
-                <option value="essay">ಪ್ರಬಂಧ</option>
-                <option value="drawing">ಚಿತ್ರಕಲೆ</option>
-                <option value="music">ಸಂಗೀತ</option>
-              </select>
-            </div>
-          )}
+          {currentGameType && currentGameType.games.length > 0 && (
+  <div className="specific-game-selector">
+    <label>ಸ್ಫರ್ಧೆ ಆಯ್ಕೆ ಮಾಡಿ:</label>
+    <select value={specificGame} onChange={(e) => setSpecificGame(e.target.value)}>
+      <option value="">ಆಯ್ಕೆ ಮಾಡಿ</option>
+      {currentGameType.games.map(game => (
+        <option key={game.id} value={game.id}>{game.nameKn}</option>
+      ))}
+    </select>
+  </div>
+)}
           {gameType === 'kambala' && (
             <div>
               {/* You can show something else here if needed */}
@@ -299,7 +369,7 @@ const App = () => {
                 />
               </div>
 
-              {(specificGame === 'volleyball' || specificGame === 'kabaddi') && (
+              {(specificGame === 'volleyball' || specificGame === 'kabaddi' || specificGame === "hagga-jaggata" || specificGame === "throwball" || specificGame === "haggu") && (
                 <>
                   <div className="form-group">
                     <label>ತಂಡದ ಹೆಸರು (Team Name):</label>
@@ -324,13 +394,12 @@ const App = () => {
                 </>
               )}
 
-              {(specificGame === 'speech' || specificGame === 'essay' || specificGame === 'drawing' || specificGame === 'music') && (
-                <>
-                  <div className="form-group">
-                    <label>ವಿಷಯ : ಕುಂದಾಪ್ರ ಪರಿಸರ</label>
-                  </div>
-                </>
-              )}
+{currentGame?.note && (
+  <div className="form-group">
+    <label>{currentGame.note}</label>
+  </div>
+)}
+
 
               <button onClick={handleSubmit} className="submit-btn">ನೋಂದಣಿ ಮಾಡಿ</button>
             </div>
@@ -362,15 +431,27 @@ const App = () => {
   );
   
   const AdminView = () => {
+    
     const [selectedGame, setSelectedGame] = useState('');
   
     const gameOptions = Array.from(
-      new Set(registrations.map(reg => `${reg.gameType} - ${reg.specificGame}`))
+      new Set(
+        registrations.map(reg => {
+          const gameGroup = gameTypes.find(g => g.type === reg.gameType);
+          const game = gameGroup?.games.find(g => g.id === reg.specificGame);
+          return {
+            key: `${reg.gameType}-${reg.specificGame}`,
+            label: `${gameGroup?.label || reg.gameType} - ${game?.nameKn || reg.specificGame}`
+          };
+        })
+      )
     );
+    
   
     const filteredRegistrations = registrations.filter(
-      reg => `${reg.gameType} - ${reg.specificGame}` === selectedGame
+      reg => `${reg.gameType}-${reg.specificGame}` === selectedGame
     );
+    
   
     return (
       <div className="page">
@@ -391,15 +472,15 @@ const App = () => {
               onChange={(e) => setSelectedGame(e.target.value)}
             >
               <option value="">ಆಟ ಆಯ್ಕೆಮಾಡಿ</option>
-              {gameOptions.map((gameKey, idx) => (
-                <option key={idx} value={gameKey}>{gameKey}</option>
-              ))}
+  {gameOptions.map((opt, idx) => (
+    <option key={idx} value={opt.key}>{opt.label}</option>
+  ))}
             </select>
           </div>
   
           {selectedGame && (
             <>
-              <h3>{selectedGame} ಗೆ ನೋಂದಣಿಗಳು:</h3>
+              <h3>ನೋಂದಣಿಗಳು:</h3>
               {filteredRegistrations.length === 0 ? (
                 <p>ಈ ಆಟಕ್ಕೆ ಯಾವುದೇ ನೋಂದಣಿಗಳು ಇಲ್ಲ.</p>
               ) : (
@@ -427,9 +508,9 @@ const App = () => {
     <div className="app">
       {currentView === 'home' && <HomePage />}
       {currentView === 'menu' && <MainMenu />}
-      {currentView === 'registration' && <GameRegistration />}
+      {currentView === 'registration' && <GameRegistration yy=""/>}
       {currentView === 'admin-login' && <AdminLogin />}
-      {currentView === 'kambala' && <GameRegistration />}
+      {currentView === 'kambala' && <GameRegistration yy="kambala" />}
       {currentView === 'admin' && isAdminAuthenticated && <AdminView />}
     </div>
   );
