@@ -100,10 +100,7 @@ const App = () => {
         <div className="date-info">
           <span className="date">3 ಆಗಸ್ಟ್ 2025  ಭಾನುವಾರ</span>
           <span className="day">ನೆಲ್ಯಾಡಿ ಬೈಲ್ ಹಾಗೂ ಜೆ ಎನ್ ಆರ್ ಸಭಾಂಗಣ NH 66 ಯಡ್ತರೆ ಬೈಂದೂರು</span>
-          <br/>
-          <br/>
-          <p>ಮಾಹಿತಿಗಾಗಿ:
-          9986099687 9481518382 9900351095 </p>
+          <span className="day">ಮಾಹಿತಿಗಾಗಿ: 9986099687, 9481518382, 9900351095 </span>
         </div>
       </div>
       
